@@ -220,14 +220,14 @@ RCT_EXPORT_METHOD(getAlbums:(NSDictionary *)params
     };
 
   PHFetchOptions* options = [[PHFetchOptions alloc] init];
-  if ([albumType isEqualToString:@"Album"] || [albumType isEqualToString:@"All"]) {
-    fetchedAlbumType = @"Album";
-    PHFetchResult<PHAssetCollection *> *const assets = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:options];
-    [assets enumerateObjectsUsingBlock:convertAsset];
-  }
   if ([albumType isEqualToString:@"SmartAlbum"] || [albumType isEqualToString:@"All"]) {
     fetchedAlbumType = @"SmartAlbum";
     PHFetchResult<PHAssetCollection *> *const assets = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAny options:options];
+    [assets enumerateObjectsUsingBlock:convertAsset];
+  }
+  if ([albumType isEqualToString:@"Album"] || [albumType isEqualToString:@"All"]) {
+    fetchedAlbumType = @"Album";
+    PHFetchResult<PHAssetCollection *> *const assets = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:options];
     [assets enumerateObjectsUsingBlock:convertAsset];
   }
 
@@ -409,8 +409,8 @@ RCT_EXPORT_METHOD(getPhotos:(NSDictionary *)params
             PHFetchResult<PHAsset *> *const assetsFetchResult = [PHAsset fetchAssetsInAssetCollection:assetCollection options:assetFetchOptions];
             currentCollectionName = [assetCollection localizedTitle];
             [assetsFetchResult enumerateObjectsUsingBlock:collectAsset];
+            *stopCollections = stopCollections_;
           }
-          *stopCollections = stopCollections_;
         }];
       } else {
         PHAssetCollectionSubtype const collectionSubtype = [RCTConvert PHAssetCollectionSubtype:groupTypes];
