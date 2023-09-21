@@ -649,7 +649,10 @@ public class CameraRollModule extends ReactContextBaseJavaModule {
                 + photoUri.toString(),
             e);
       }
-      retriever.release();
+      try {
+        retriever.release();
+      }
+      catch (Exception e) {}
     }
 
     if (photoDescriptor != null) {
@@ -719,7 +722,10 @@ public class CameraRollModule extends ReactContextBaseJavaModule {
                     + photoUri.toString(),
                 e);
           }
-          retriever.release();
+          try {
+            retriever.release();
+          }
+          catch (Exception e) {}
         } else {
           BitmapFactory.Options options = new BitmapFactory.Options();
           // Set inJustDecodeBounds to true so we don't actually load the Bitmap, but only get its
